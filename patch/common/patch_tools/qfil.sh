@@ -131,14 +131,14 @@ function build_parse()
 		-m)
 			rm -rf ./qfil
 			build_meta
-			rm -rf ./qfil/system.img
-			rm -rf ./qfil/userdata.img
+			#rm -rf ./qfil/system.img
+			#rm -rf ./qfil/userdata.img
 			;;
 		-f)
 			rm -rf ./qfil
 			build_flat
-			rm -rf ./qfil/system.img
-			rm -rf ./qfil/userdata.img
+			#rm -rf ./qfil/system.img
+			#rm -rf ./qfil/userdata.img
 			;;
 
 		-a)
