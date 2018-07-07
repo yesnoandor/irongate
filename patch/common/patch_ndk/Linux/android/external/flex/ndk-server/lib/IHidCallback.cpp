@@ -46,41 +46,41 @@ BpHidCallback::BpHidCallback(const sp<IBinder>& impl) :BpInterface<IHidCallback>
 // BpHidCallback 的notifyCallback	方法的实现
 // 并没有实现notifyCallback 的功能
 // 而是跨进程调用Binder  实体对象BnInterface的notifyCallback 方法
-int BpHidCallback::notifyCallback(void *buf,int len) {
+int BpHidCallback::notifyCallback(void *buf,int len)
+{
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
 	//Parcel data,reply;
 
-		//data.writeInt32(a);
-		//remote()->transact(NOTIFY_CALLBACK_TRANSACTION,data,&reply);
+	//data.writeInt32(a);
+	//remote()->transact(NOTIFY_CALLBACK_TRANSACTION,data,&reply);
 
+	Parcel data, reply;
+	//data.writeInterfaceToken(ICallback::getInterfaceDescriptor());
+	data.writeInt32(len);
+	data.write(buf, len);
+	remote()->transact(NOTIFY_CALLBACK_TRANSACTION,data,&reply);
 
-		Parcel data, reply;
-		//data.writeInterfaceToken(ICallback::getInterfaceDescriptor());
-		data.writeInt32(len);
-		data.write(buf, len);
-		remote()->transact(NOTIFY_CALLBACK_TRANSACTION,data,&reply);
-
-		ALOGI("%s::---------------\r\n",__FUNCTION__);
+	ALOGI("%s::---------------\r\n",__FUNCTION__);
 				
-		return reply.readInt32();
-	}
+	return reply.readInt32();
+}
 	
-	//-------------------------------------------
-	// 实现IHidCallback	接口的方法
-	IMPLEMENT_META_INTERFACE(HidCallback, "android.HidServer.IHidCallback");
+//-------------------------------------------
+// 实现IHidCallback	接口的方法
+IMPLEMENT_META_INTERFACE(HidCallback, "android.HidServer.IHidCallback");
 
  
-	//-------------------------------------------
-	// 实现ICallback  接口实体类的onTransact  方法
-	status_t BnHidCallback::onTransact(uint32_t code, 
+//-------------------------------------------
+// 实现IHidCallback  接口实体类的onTransact  方法
+status_t BnHidCallback::onTransact(uint32_t code, 
 										const Parcel& data, 
 										Parcel* reply, 
-										uint32_t flags){
+										uint32_t flags)
+{
+	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
-		ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
-
-		ALOGI("code = %d\r\n",code);
+	ALOGI("code = %d\r\n",code);
 
 		switch (code) {
 			case NOTIFY_CALLBACK_TRANSACTION:{

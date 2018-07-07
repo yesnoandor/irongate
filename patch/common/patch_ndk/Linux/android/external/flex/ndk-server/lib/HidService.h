@@ -44,7 +44,7 @@ public:
 	void startServer(NDKRole role);
 
 	virtual int writeMessage(int id,void * buf,int len);
-	virtual int setCallback(const sp<IHidCallback>& callback);
+	virtual int setCallback(const int channel,const sp<IHidCallback>& callback);
 	virtual String8 getVersion();
 
 	void push_msg(msg_t * item);
@@ -56,6 +56,7 @@ public:
 
 public:
 	Vector<sp<IHidCallback>> mCallback;
+	Vector<int> mChannel;
 	list<msg_t *> mHidTxQueue;
 
 private:

@@ -68,11 +68,12 @@ namespace android
 
 
 	// BpNativeService 的setCallback  方法的实现
-	int BpHidService::setCallback(const sp<IHidCallback>& callback){  
+	int BpHidService::setCallback(const int channel,const sp<IHidCallback>& callback){  
 		ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
 		Parcel data, reply;
 
+		data.writeInt32(channel);
 		data.writeStrongBinder(IInterface::asBinder(callback));
 		remote()->transact(SET_CALLBACK_TRANSACTION, data, &reply);
 
@@ -156,9 +157,11 @@ namespace android
 
 			case SET_CALLBACK_TRANSACTION:{
 					ALOGI("set callback!\r\n");
-					
+
+					int channel;
+					data.readInt32(&channel);
 					sp<IHidCallback> callback = interface_cast<IHidCallback>(data.readStrongBinder());
-					reply->writeInt32(setCallback(callback));
+					reply->writeInt32(setCallback(channel,callback));
 					
 					return NO_ERROR;
 				}

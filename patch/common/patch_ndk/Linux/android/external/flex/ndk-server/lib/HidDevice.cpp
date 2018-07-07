@@ -124,6 +124,11 @@ bool HidDevice::set_feature_report(char * buf,int len)
 #endif
 
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	for(int i=0;i<len;i++)
+	{
+		ALOGI("buf[%d] = 0x%x\r\n",i,buf[i]);
+	}
 	
 	ALOGI("%s::---------------\r\n",__FUNCTION__);
 	
@@ -140,6 +145,11 @@ bool HidDevice::get_feature_report(char * buf,int len)
 #endif
 
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	for(int i=0;i<len;i++)
+	{
+		ALOGI("buf[%d] = 0x%x\r\n",i,buf[i]);
+	}
 	
 	ALOGI("%s::---------------\r\n",__FUNCTION__);
 

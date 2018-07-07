@@ -101,13 +101,14 @@ int HidService::writeMessage(int id,void * buf,int len)
 }
 
 
-int HidService::setCallback(const sp<IHidCallback>& callback)
+int HidService::setCallback(const int channel,const sp<IHidCallback>& callback)
 {
-	ALOGI("%s:::%s::+++++++++++++++\r\n",__FILE__,__FUNCTION__);
+	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
+	mChannel.push_back(channel);
 	mCallback.push_back(callback);
 
-	ALOGI("%s:::%s::---------------\r\n",__FILE__,__FUNCTION__);
+	ALOGI("%s::---------------\r\n",__FUNCTION__);
 
 	return 0;
 }

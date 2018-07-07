@@ -83,7 +83,7 @@ int NdkClientImpl::registerOnMessage(int channel,flxndkMsgCallbackFunc onMessage
 	sp<HidCallback> callback = new HidCallback();
 	callback->registerOnMessage(channel,onMessage);
 	
-	ret = mIHidService->setCallback(callback);
+	ret = mIHidService->setCallback(channel,callback);
 
 	ALOGI("%s::---------------\r\n",__FUNCTION__);
 	

@@ -60,10 +60,8 @@ int main() {
 	version = client->getVersion();
 	printf("version = %s\r\n",version.string());
 
-
-
-	
 	// 注册不同通道的处理函数
+	printf("register onMessage callback function...\r\n");
 	client->registerOnMessage(CH_GESTURE_OUT,onMessage);
 
 	// 调用写数据方法

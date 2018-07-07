@@ -119,11 +119,20 @@ bool HidDaemonThread::threadLoop() {
 						}
 
 						ALOGI("mCallback size = %d\r\n",(int)mHidService->mCallback.size());
-
+						ALOGI("mChannel size = %d\r\n",(int)mHidService->mChannel.size());
+						
 						for(i=0;i<(int)mHidService->mCallback.size();i++)
 						{
     						sp<IHidCallback> c = mHidService->mCallback[i];
-    						c->notifyCallback(buf,size);  
+    						int channel = mHidService->mChannel[i];
+
+    						ALOGI("filter channel = %d",channel);
+    						ALOGI("real channel = %d",((char *)buf)[0]);
+
+    						if(channel == (char *)buf)[0])
+							{						
+    							c->notifyCallback(buf,size);
+    						}
     					}
 					}		
 					

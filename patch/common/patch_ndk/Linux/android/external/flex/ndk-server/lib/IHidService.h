@@ -49,7 +49,7 @@ public:
 
 	// 该服务对外提供的操作接口
 	virtual int writeMessage(int id,void * buf,int length) = 0;			// 传输原始数据
-	virtual int setCallback(const sp<IHidCallback>& callback) = 0;	// 设置回调
+	virtual int setCallback(const int channel,const sp<IHidCallback>& callback) = 0;	// 设置回调
 	virtual String8 getVersion() = 0;
 };
 
@@ -78,7 +78,7 @@ public:
 	BpHidService(const sp<IBinder>& impl);
 
 	virtual int writeMessage(int id,void * buf,int len);
-	virtual int setCallback(const sp<IHidCallback>& callback);
+	virtual int setCallback(const int channel,const sp<IHidCallback>& callback);
 	virtual String8 getVersion();
 };
 
