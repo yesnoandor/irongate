@@ -69,11 +69,11 @@ bool HidTxThread::threadLoop() {
 	//mUsbHid->open_device();
 	
 	while(!exitPending()){
-		if(!mHidService->empty())
+		if(!mHidService->tx_empty())
 		{			
 			msg_t * item;
 
-			item = mHidService->pop_msg();
+			item = mHidService->pop_tx_msg();
 			mHidDevice->write_hid_report((char *)item->buf,item->len);
 
 			delete [] (char *)item->buf; 

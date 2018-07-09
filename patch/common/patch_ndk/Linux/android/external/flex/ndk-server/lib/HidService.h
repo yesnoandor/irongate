@@ -34,6 +34,7 @@ namespace android {
 
 class HidDaemonThread;
 class HidTxThread;
+class HidRxThread;
 
 class HidService : public BnHidService
 {
@@ -47,9 +48,14 @@ public:
 	virtual int setCallback(const int channel,const sp<IHidCallback>& callback);
 	virtual String8 getVersion();
 
-	void push_msg(msg_t * item);
-	msg_t * pop_msg();
-	bool empty();
+	void push_tx_msg(msg_t * item);
+	msg_t * pop_tx_msg();
+	bool tx_empty();
+
+
+	void push_rx_msg(msg_t * item);
+	msg_t * pop_rx_msg();
+	bool rx_empty();
 	
 public:
 	HidService();
@@ -58,6 +64,7 @@ public:
 	Vector<sp<IHidCallback>> mCallback;
 	Vector<int> mChannel;
 	list<msg_t *> mHidTxQueue;
+	list<msg_t *> mHidRxQueue;
 
 private:
 	String8 mVersion;		
@@ -65,6 +72,7 @@ private:
 	
 	sp<HidDaemonThread> mHidDaemonThread;
 	sp<HidTxThread> mHidTxThread;
+	sp<HidRxThread> mHidRxThread;
     
 private:
     virtual ~HidService();

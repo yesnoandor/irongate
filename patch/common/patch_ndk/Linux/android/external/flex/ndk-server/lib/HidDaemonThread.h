@@ -27,6 +27,8 @@ namespace android {
 
 class HidDaemonThread : public Thread
 {
+	static const int MAX_HID_BUFFER_SIZE = 1024;
+	
 public:
     HidDaemonThread(const sp<HidService> service,const sp<HidDevice> device);
     virtual  ~HidDaemonThread();

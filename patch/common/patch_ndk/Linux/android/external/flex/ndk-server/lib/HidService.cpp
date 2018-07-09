@@ -22,6 +22,7 @@
 
 #include	"HidDaemonThread.h"
 #include	"HidTxThread.h"
+#include	"HidRxThread.h"
 #include	"HidService.h"
 
 
@@ -93,7 +94,7 @@ int HidService::writeMessage(int id,void * buf,int len)
 	}
 	#endif
 
-	push_msg(item);
+	push_tx_msg(item);
 		
 	ALOGI("%s::---------------\r\n",__FUNCTION__);
 
@@ -140,12 +141,16 @@ void HidService::startServer(NDKRole role){
 	// 
 	mHidTxThread = new HidTxThread(this,mHidDevice);
 	mHidTxThread->start();
+
+	// 
+	mHidRxThread = new HidRxThread(this,mHidDevice);
+	mHidRxThread->start();
 	
 	ALOGI("%s::---------------\r\n",__FUNCTION__);
 }
 
 
-void HidService::push_msg(msg_t * item)
+void HidService::push_tx_msg(msg_t * item)
 {
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
@@ -155,7 +160,7 @@ void HidService::push_msg(msg_t * item)
 	ALOGI("%s::---------------\r\n",__FUNCTION__);
 }
 
-msg_t * HidService::pop_msg()
+msg_t * HidService::pop_tx_msg()
 {
 	msg_t * item;
 	
@@ -170,7 +175,7 @@ msg_t * HidService::pop_msg()
 }
 
 
-bool HidService::empty()
+bool HidService::tx_empty()
 {
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
@@ -179,8 +184,39 @@ bool HidService::empty()
 	return mHidTxQueue.empty();
 }
 
-	
+void HidService::push_rx_msg(msg_t * item)
+{
+	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	mHidRxQueue.push_back(item);
+	mHidRxThread->notify();
+
+	ALOGI("%s::---------------\r\n",__FUNCTION__);
 }
 
+msg_t * HidService::pop_rx_msg()
+{
+	msg_t * item;
+	
+	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
+	
+	item = mHidRxQueue.front();
+	mHidRxQueue.pop_front();
+
+	ALOGI("%s::---------------\r\n",__FUNCTION__);
+
+	return item;
+}
+
+
+bool HidService::rx_empty()
+{
+	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	ALOGI("%s::---------------\r\n",__FUNCTION__);
+
+	return mHidRxQueue.empty();
+}
+}
 	
 

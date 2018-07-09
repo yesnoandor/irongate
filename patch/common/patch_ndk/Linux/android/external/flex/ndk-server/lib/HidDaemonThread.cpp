@@ -67,7 +67,7 @@ bool HidDaemonThread::threadLoop() {
 	int ret;
 	int size;
 	
-	char buf[1024];
+	char buf[MAX_HID_BUFFER_SIZE];
 	
     ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 	
@@ -97,7 +97,7 @@ bool HidDaemonThread::threadLoop() {
 				ALOGI("get data event!\r\n");
 				if (FD_ISSET(fd, &readfds))
 				{
-					size = mHidDevice->read_hid_report(buf, sizeof(buf));
+					size = mHidDevice->read_hid_report(buf, MAX_HID_BUFFER_SIZE);
 					if(size < 0)
 					{	
 						ALOGE("socket (%d) recv failed!(size = %d,err = %s)\r\n",i,size,strerror(errno));
@@ -120,7 +120,7 @@ bool HidDaemonThread::threadLoop() {
 
 						ALOGI("mCallback size = %d\r\n",(int)mHidService->mCallback.size());
 						ALOGI("mChannel size = %d\r\n",(int)mHidService->mChannel.size());
-						
+
 						for(i=0;i<(int)mHidService->mCallback.size();i++)
 						{
     						sp<IHidCallback> c = mHidService->mCallback[i];
@@ -129,13 +129,21 @@ bool HidDaemonThread::threadLoop() {
     						ALOGI("filter channel = %d",channel);
     						ALOGI("real channel = %d",((char *)buf)[0]);
 
-    						if(channel == (char *)buf)[0])
-							{						
-    							c->notifyCallback(buf,size);
+    						if(channel == ((char *)buf)[0])
+							{
+								msg_t * item;
+								
+								item = new msg_t;
+								item->buf = new char[size];
+								item->len = size;
+								item->id = i;
+
+								memcpy((char *)item->buf,buf,item->len);
+								mHidService->push_rx_msg(item);
+								//c->notifyCallback(buf,size);
     						}
     					}
 					}		
-					
 				}
 				break;
 		}

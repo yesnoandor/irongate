@@ -16,6 +16,7 @@ LOCAL_SRC_FILES:= \
 	HidDevice.cpp \
 	HidDaemonThread.cpp \
 	HidTxThread.cpp \
+	HidRxThread.cpp \
 	HidService.cpp \
 	IHidService.cpp \
 	HidCallback.cpp \
