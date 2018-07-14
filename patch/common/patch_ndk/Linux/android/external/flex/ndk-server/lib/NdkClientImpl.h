@@ -40,7 +40,7 @@ public:
 public:
 	String8 getVersion();
 	int writeMessage(int id,void * buf,int len);
-	int registerOnMessage(int channel,flxndkMsgCallbackFunc onMessage);
+	int registerOnMessage(int channel,ndkCallbackFunc onMessage);
 
 private:
 	sp<IHidService> mIHidService;

@@ -68,7 +68,7 @@ int NdkClient::writeMessage(int id,void * buf,int len)
 }
 
 
-int NdkClient::registerOnMessage(int channel,flxndkMsgCallbackFunc callback)
+int NdkClient::registerOnMessage(int channel,ndkCallbackFunc callback)
 {
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 

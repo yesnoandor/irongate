@@ -39,10 +39,10 @@ public:
                                 Parcel* reply,  
                                 uint32_t flags); 
 
-	virtual void registerOnMessage(int channel,flxndkMsgCallbackFunc callback);
+	virtual void registerOnMessage(int channel,ndkCallbackFunc callback);
 
 private:
-	flxndkMsgCallbackFunc onMessageFunc;
+	ndkCallbackFunc onMessageFunc;
 	int	mChannel;
 	
 };

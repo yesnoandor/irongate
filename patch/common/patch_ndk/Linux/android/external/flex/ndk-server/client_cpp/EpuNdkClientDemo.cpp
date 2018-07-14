@@ -62,18 +62,18 @@ int main() {
 
 	// 注册不同通道的处理函数
 	printf("register onMessage callback function...\r\n");
-	client->registerOnMessage(CH_GESTURE_OUT,onMessage);
+	client->registerOnMessage(CHANNEL_GESTURE,onMessage);
 
 	// 调用写数据方法
 	printf("write data into epu...\r\n");
 	memset(buf,0x00,sizeof(buf));
 	for(unsigned int i=0;i<sizeof(buf);i++)
 	{
-		buf[i] = 3*i+4;
+		buf[i] = 3*i+3;
 	}
 	
 	do{
-		client->writeMessage(CH_GESTURE_IN,(void *)buf,sizeof(buf));
+		client->writeMessage(CHANNEL_GESTURE,(void *)buf,sizeof(buf));
 		sleep(20);
 	}while(1);
 	

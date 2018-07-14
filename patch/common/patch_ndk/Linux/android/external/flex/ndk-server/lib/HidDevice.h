@@ -76,6 +76,8 @@ public:
 	bool write_hid_report(char * buf,int len);
 	int read_hid_report(char * buf,int len);
 
+	bool query_device();
+
 //private:
 public:
 	int m_hid_fd;

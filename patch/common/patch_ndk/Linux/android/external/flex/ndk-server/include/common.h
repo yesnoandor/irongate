@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <fcntl.h>
+#include <unistd.h>
+
 
 
 // C++
@@ -32,16 +34,18 @@ typedef enum
 	HMD = 1
 }NDKRole;
 
+
 typedef enum
 {
-	CH_VENDOR_OUT = 1,
-	CH_VENDOR_IN,
-	CH_GESTURE_OUT,
-	CH_GESTURE_IN
+	CHANNEL_VENDOR = 1,
+	CHANNEL_GESTURE,
+	CHANNEL_HID,
 }NDKChannel;
 
 
-typedef void (*flxndkMsgCallbackFunc)(void * buf, int len);
+
+
+typedef void (*ndkCallbackFunc)(void * buf, int len);
 
 
 #endif

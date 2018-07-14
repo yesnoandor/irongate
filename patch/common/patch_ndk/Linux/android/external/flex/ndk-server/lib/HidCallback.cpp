@@ -34,7 +34,7 @@
   
 namespace android{
 
-void HidCallback::registerOnMessage(int channel,flxndkMsgCallbackFunc callback)
+void HidCallback::registerOnMessage(int channel,ndkCallbackFunc callback)
 {
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
@@ -60,10 +60,7 @@ int HidCallback::notifyCallback(void * buf,int len)
 	ALOGI("report id = %d\r\n",((char *)buf)[0]);
 	ALOGI("mChannel = %d\r\n",mChannel);
 	
-	if(((char *)buf)[0] == mChannel)
-	{	
-		onMessageFunc(buf,len);
-	}
+	onMessageFunc(buf,len);
 	
 	ALOGI("%s::---------------\r\n",__FUNCTION__);
 		

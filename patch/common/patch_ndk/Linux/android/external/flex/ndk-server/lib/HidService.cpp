@@ -70,6 +70,7 @@ void HidService::instantiate(NDKRole role) {
 int HidService::writeMessage(int id,void * buf,int len)
 {
 	msg_t * item;
+	int channel;
 		
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
@@ -80,10 +81,30 @@ int HidService::writeMessage(int id,void * buf,int len)
 	{
 		ALOGI("buf[%d] = 0x%x\r\n",i,((char *)buf)[i]);
 	}
+    						
+	if(mRole == EPU)
+	{
+		channel = id * 2 - 1;			// EP OUT
+	}
+	else
+	{
+		channel = id * 2;				// EP IN
+	
+	}
+
+	ALOGI("id = %d\r\n",id);
+	ALOGI("channel = %d\r\n",channel);
+	
+	if((channel != ((char *)buf)[0]) && id != CHANNEL_HID)
+	{
+		ALOGE("report id mismatch(id = %d,channel = %d,val = %d)!\r\n",id,channel,((char *)buf)[0]);
+		return -1;		
+	}
 
 	item = new msg_t;
 	item->buf = new char[len];
 	item->len = len;
+	item->id = id;
 		
 	memcpy((char *)item->buf,buf,len);
 
@@ -130,6 +151,8 @@ void HidService::startServer(NDKRole role){
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
 
 	ALOGI("role = %s",role ? "HMD" : "EPU");
+
+	mRole = role;
 
 	// 
 	mHidDevice = new HidDevice(this,role);

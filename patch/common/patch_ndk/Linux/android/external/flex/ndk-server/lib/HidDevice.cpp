@@ -20,7 +20,7 @@
 ******************************************************************************/
 
 
-#include	"common.h" 
+#include	"common.h"
 
 #include	"IHidService.h"
 #include	"HidService.h"
@@ -50,7 +50,7 @@ const string HidDevice::EPU_HID_DEVICE_NAME = "/dev/flxhmd";
 HidDevice::HidDevice(sp<HidService> service,NDKRole role)
 {
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
-
+	
 	if(role == EPU)
 	{
 		m_hid_name = EPU_HID_DEVICE_NAME;
@@ -64,6 +64,11 @@ HidDevice::HidDevice(sp<HidService> service,NDKRole role)
 
 	mHidService = service;
 
+	while(!query_device()){
+		sleep(20);
+		ALOGE("query device failed!\r\n");
+	}
+	
 	HidDevice::open_device();
 
 
@@ -79,20 +84,34 @@ HidDevice::~HidDevice()
 
 	ALOGI("%s::---------------\r\n",__FUNCTION__);
 }
+
+bool HidDevice::query_device()
+{
+	bool ret = false;
 	
+	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	if(access(m_hid_name.c_str(),R_OK | W_OK) == 0)
+		ret = true;
+    
+	ALOGI("%s::---------------\r\n",__FUNCTION__);
+
+	return ret;
+}
+
 bool HidDevice::open_device(string name)
 {
 	bool ret = true;
 
 	ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
-	
-    m_hid_fd = open(name.c_str(),O_RDWR);
-    if (m_hid_fd < 0){
-        ALOGE("failed to open usb hid device(%s)",name.c_str());
-        ret = false;
-    }
 
-    ALOGI("%s::---------------\r\n",__FUNCTION__);
+	m_hid_fd = open(name.c_str(),O_RDWR);
+	if (m_hid_fd < 0){
+		ALOGE("failed to open usb hid device(%s)",name.c_str());
+		ret = false;
+	}
+
+	ALOGI("%s::---------------\r\n",__FUNCTION__);
 
     return ret;
 }

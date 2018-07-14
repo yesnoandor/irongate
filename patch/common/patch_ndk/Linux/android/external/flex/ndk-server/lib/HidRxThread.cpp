@@ -85,7 +85,8 @@ bool HidRxThread::threadLoop() {
 		else
 		{
 			Mutex::Autolock lock(mHidRxMutex);
-			mHidRxCondition.waitRelative(mHidRxMutex,seconds(5));
+			mHidRxCondition.wait(mHidRxMutex);
+			//mHidRxCondition.waitRelative(mHidRxMutex,seconds(5));
 		}
 
 	}

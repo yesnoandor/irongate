@@ -32,6 +32,17 @@
 
 namespace android {
 
+
+typedef enum
+{
+	CH_VENDOR_OUT = 1,		// EPU --> HMD
+	CH_VENDOR_IN,			// HMD --> EPU
+	CH_GESTURE_OUT,			// EPU --> HMD
+	CH_GESTURE_IN,			// HMD --> EPU
+	CH_END,
+}NDKReportID;
+
+
 class HidDaemonThread;
 class HidTxThread;
 class HidRxThread;
@@ -61,6 +72,7 @@ public:
 	HidService();
 
 public:
+	NDKRole mRole;
 	Vector<sp<IHidCallback>> mCallback;
 	Vector<int> mChannel;
 	list<msg_t *> mHidTxQueue;

@@ -111,6 +111,7 @@ bool HidDaemonThread::threadLoop() {
 					else	
 					{
 						ssize_t len = 0;
+						int channel;
 
 						ALOGI("size = %d\r\n",(int)size);
 						for(i=0;i<size;i++)
@@ -124,12 +125,22 @@ bool HidDaemonThread::threadLoop() {
 						for(i=0;i<(int)mHidService->mCallback.size();i++)
 						{
     						sp<IHidCallback> c = mHidService->mCallback[i];
-    						int channel = mHidService->mChannel[i];
+
+    						if(mHidService->mRole == EPU)
+    						{
+								channel = mHidService->mChannel[i] * 2;			// EP IN
+    						}
+    						else	// == HMD
+    						{
+    							channel = mHidService->mChannel[i] * 2 - 1;		// EP OUT
+    						}
+    						
+    						//int channel = mHidService->mChannel[i];
 
     						ALOGI("filter channel = %d",channel);
     						ALOGI("real channel = %d",((char *)buf)[0]);
 
-    						if(channel == ((char *)buf)[0])
+    						if((channel == ((char *)buf)[0]) || (mHidService->mChannel[i] == CHANNEL_HID))
 							{
 								msg_t * item;
 								

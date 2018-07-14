@@ -36,8 +36,10 @@ using namespace android;
 int main() {
 	printf("%s::+++++++++++++++\r\n",__FUNCTION__);
 
+	//sleep(30);
+	
 	sp<NdkServer> server = NdkServer::create();
-	server->startServer(HMD);
+	server->startServer(EPU);
 
 	printf("%s::---------------\r\n",__FUNCTION__);
 	

@@ -1,0 +1,42 @@
+type ndk_server, domain, domain_deprecated;
+#type ndk_server, domain;
+type ndk_server_exec, exec_type, file_type;
+permissive ndk_server; 
+init_daemon_domain(ndk_server)
+
+
+#Allow flex to access sys nodes
+allow ndk_server sysfs:file rw_file_perms;
+
+allow ndk_server self:netlink_kobject_uevent_socket { read bind setopt create };
+allow ndk_server self:capability { sys_nice dac_override setuid setgid fowner chown fsetid kill net_admin sys_module net_raw};
+
+# clone in shell
+allow ndk_server devpts:chr_file rw_file_perms;
+allow ndk_server tty_device:chr_file rw_file_perms;
+allow ndk_server console_device:chr_file rw_file_perms;
+allow ndk_server input_device:dir r_dir_perms;
+allow ndk_server input_device:chr_file rw_file_perms;
+r_dir_file(ndk_server, system_file)
+allow ndk_server system_file:file x_file_perms;
+allow ndk_server toolbox_exec:file rx_file_perms;
+allow ndk_server shell_exec:file rx_file_perms;
+allow ndk_server zygote_exec:file rx_file_perms;
+
+allow ndk_server audio_device:dir r_dir_perms;
+allow ndk_server audio_device:chr_file rw_file_perms;
+
+allow ndk_server su_exec:file { getattr };
+allow ndk_server ndk_server_exec:file { read getattr open execute execute_no_trans };
+
+#Allow ndk_server to use Binder IPC
+binder_service(ndk_server)
+binder_use(ndk_server)
+binder_call(ndk_server, system_server);
+
+allow ndk_server ndk_server_service:service_manager add;
+allow ndk_server hidg_device:chr_file rw_file_perms;
+#allow ndk_server flxhmd_device:chr_file rw_file_perms;
+
+
+

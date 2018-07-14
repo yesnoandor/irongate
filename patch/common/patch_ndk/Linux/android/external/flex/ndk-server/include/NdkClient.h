@@ -37,7 +37,7 @@ public:
 public:
 	String8 getVersion();
 	int writeMessage(int id,void * buf,int len);
-	int registerOnMessage(int channel,flxndkMsgCallbackFunc callback);
+	int registerOnMessage(int channel,ndkCallbackFunc callback);
 	
 
 private:

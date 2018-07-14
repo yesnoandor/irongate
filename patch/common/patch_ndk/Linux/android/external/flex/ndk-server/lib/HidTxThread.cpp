@@ -57,16 +57,10 @@ HidTxThread::~HidTxThread()
 }  
 
 bool HidTxThread::threadLoop() {	
-	int i;
-
 	int ret;
 	ssize_t size;
 	
-	//uint8_t buf[1024];
-	
     ALOGI("%s::+++++++++++++++\r\n",__FUNCTION__);
-
-	//mUsbHid->open_device();
 	
 	while(!exitPending()){
 		if(!mHidService->tx_empty())
@@ -82,9 +76,9 @@ bool HidTxThread::threadLoop() {
 		else
 		{
 			Mutex::Autolock lock(mHidTxMutex);
-			mHidTxCondition.waitRelative(mHidTxMutex,seconds(5));
+			mHidTxCondition.wait(mHidTxMutex);
+			//mHidTxCondition.waitRelative(mHidTxMutex,seconds(5));
 		}
-
 	}
 	
 	ALOGI("%s::---------------\r\n",__FUNCTION__);

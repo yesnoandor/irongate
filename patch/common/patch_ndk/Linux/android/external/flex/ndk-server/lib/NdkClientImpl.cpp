@@ -74,7 +74,7 @@ int NdkClientImpl::writeMessage(int id,void * buf,int len)
 	return mIHidService->writeMessage(id,buf,len);
 }
 
-int NdkClientImpl::registerOnMessage(int channel,flxndkMsgCallbackFunc onMessage)
+int NdkClientImpl::registerOnMessage(int channel,ndkCallbackFunc onMessage)
 {
 	int ret;
 
