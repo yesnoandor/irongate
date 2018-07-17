@@ -39,6 +39,12 @@ typedef enum
 	CH_VENDOR_IN,			// HMD --> EPU
 	CH_GESTURE_OUT,			// EPU --> HMD
 	CH_GESTURE_IN,			// HMD --> EPU
+	CH_SENSOR_OUT,			// EPU --> HMD
+	CH_SENSOR_IN,			// HMD --> EPU
+	CH_FISHEYE_OUT,			// EPU --> HMD
+	CH_FISHEYE_IN,			// HMD --> EPU
+	CH_ANDROID_OUT,			// EPU --> HMD
+	CH_ANDROID_IN,			// HMD --> EPU
 	CH_END,
 }NDKReportID;
 

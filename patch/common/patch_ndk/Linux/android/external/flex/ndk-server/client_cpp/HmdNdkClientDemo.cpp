@@ -34,7 +34,7 @@ using namespace android;
 
 
 
-void onMessage(void * buf, int len)
+void onVendorMessage(void * buf, int len)
 {	
 	printf("%s::+++++++++++++++\r\n",__FUNCTION__);
 
@@ -45,6 +45,56 @@ void onMessage(void * buf, int len)
 	
 	printf("%s::---------------\r\n",__FUNCTION__);
 }
+
+
+void onGestureMessage(void * buf, int len)
+{	
+	printf("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	for(int i=0;i<len;i++)
+	{
+		printf("buf[%d] = 0x%x\r\n",i,((char *)buf)[i]);	
+	}
+	
+	printf("%s::---------------\r\n",__FUNCTION__);
+}
+
+void onSensorMessage(void * buf, int len)
+{	
+	printf("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	for(int i=0;i<len;i++)
+	{
+		printf("buf[%d] = 0x%x\r\n",i,((char *)buf)[i]);	
+	}
+	
+	printf("%s::---------------\r\n",__FUNCTION__);
+}
+
+void onFishEyeMessage(void * buf, int len)
+{	
+	printf("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	for(int i=0;i<len;i++)
+	{
+		printf("buf[%d] = 0x%x\r\n",i,((char *)buf)[i]);	
+	}
+	
+	printf("%s::---------------\r\n",__FUNCTION__);
+}
+
+void onAndroidMessage(void * buf, int len)
+{	
+	printf("%s::+++++++++++++++\r\n",__FUNCTION__);
+
+	for(int i=0;i<len;i++)
+	{
+		printf("buf[%d] = 0x%x\r\n",i,((char *)buf)[i]);	
+	}
+	
+	printf("%s::---------------\r\n",__FUNCTION__);
+}
+
 
 
 // 实现client   
@@ -61,20 +111,68 @@ int main() {
 	printf("version = %s\r\n",version.string());
 
 	// 注册不同通道的处理函数
-	printf("register onMessage callback function...\r\n");
-	client->registerOnMessage(CHANNEL_GESTURE,onMessage);
+	printf("register onVendorMessage callback function...\r\n");
+	client->registerOnMessage(CHANNEL_VENDOR,onVendorMessage);
+
+	printf("register onGestureMessage callback function...\r\n");
+	client->registerOnMessage(CHANNEL_GESTURE,onGestureMessage);
+
+	printf("register onSensorMessage callback function...\r\n");
+	client->registerOnMessage(CHANNEL_SENSOR,onSensorMessage);
+
+	printf("register onFishEyeMessage callback function...\r\n");
+	client->registerOnMessage(CHANNEL_FISHEYE,onFishEyeMessage);
+
+	printf("register onAndroidMessage callback function...\r\n");
+	client->registerOnMessage(CHANNEL_ANDROID,onAndroidMessage);
 
 	// 调用写数据方法
 	printf("write data into epu...\r\n");
-	memset(buf,0x00,sizeof(buf));
-	for(unsigned int i=0;i<sizeof(buf);i++)
-	{
-		buf[i] = 3*i+4;		// report id = 3,channel --> gesture out
-	}
 	
 	do{
+		// 测试GESTURE IN  通道
+		printf("test gesture in channel ...\r\n");
+		memset(buf,0x00,sizeof(buf));
+		for(unsigned int i=0;i<sizeof(buf);i++)
+		{
+			buf[i] = 3*i+4;		// report id = 4,channel --> gesture in
+		}
+	
 		client->writeMessage(CHANNEL_GESTURE,(void *)buf,sizeof(buf));
-		sleep(20);
+		sleep(10);
+
+		// 测试SENSOR IN  通道
+		printf("test sensor in channel ...\r\n");
+		memset(buf,0x00,sizeof(buf));
+		for(unsigned int i=0;i<sizeof(buf);i++)
+		{
+			buf[i] = 3*i+6;		// report id = 6,channel --> sensor in
+		}
+	
+		client->writeMessage(CHANNEL_SENSOR,(void *)buf,sizeof(buf));
+		sleep(10);
+
+		// 测试FISHEYE IN  通道
+		printf("test fisheye in channel ...\r\n");
+		memset(buf,0x00,sizeof(buf));
+		for(unsigned int i=0;i<sizeof(buf);i++)
+		{
+			buf[i] = 3*i+8;		// report id = 8,channel --> fisheye in
+		}
+	
+		client->writeMessage(CHANNEL_FISHEYE,(void *)buf,sizeof(buf));
+		sleep(10);
+
+		// 测试ANDROID IN  通道
+		printf("test android in channel ...\r\n");
+		memset(buf,0x00,sizeof(buf));
+		for(unsigned int i=0;i<sizeof(buf);i++)
+		{
+			buf[i] = 3*i+10;	// report id = 10,channel --> android in
+		}
+	
+		client->writeMessage(CHANNEL_ANDROID,(void *)buf,sizeof(buf));
+		sleep(10);
 	}while(1);
 	
 	printf("%s::---------------\r\n",__FUNCTION__);
